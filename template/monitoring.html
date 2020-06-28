@@ -1,0 +1,31 @@
+<html>
+ <head>
+   <title>Monitoring</title>
+   <style>
+      ul { list-style: none; }
+   </style>
+ </head>
+ <body>
+    <h2>Reading messages...</h2>
+   <ul id="messages"></ul>
+   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+   </script>
+   <script>
+   $(function(){
+   var socket = null;
+   var messages = $("#messages");
+   if (!window["WebSocket"]) {
+      alert("Error: Your browser does not support web sockets.")
+   } else {
+      socket = new WebSocket("ws://localhost:8080/api/v1/monitor/room");
+      socket.onclose = function() {
+         alert("Connection has been closed.");
+      }
+      socket.onmessage = function(e) {
+         console.log(e.data)
+         messages.append($("<li>").text(e.data));
+      }
+   }});
+   </script>
+</body>
+</html>
